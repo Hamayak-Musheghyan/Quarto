@@ -15,6 +15,6 @@ The project will have 3 classes.
 
 Board class: this creates the 4x4 board for the game.
 
-Figures class: for defining the 16 figures. Each will have 4 characteristics: colour (light/dark), height(tall/short), shape(square/round), form(hollow/solid).
+Figures class: for defining the 16 figures. Each will have 4 characteristics: colour(light/dark), height(tall/short), shape(square/round), form(hollow/solid).
 
 Play class: defines the rules of the game.
