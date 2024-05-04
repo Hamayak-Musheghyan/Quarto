@@ -1,6 +1,10 @@
 package am.aua.quarto.core.figures;
 
 public class SuperAntiJoker extends SpecialFigure {
+
+    public SuperAntiJoker(){
+        super(500);
+    }
     public boolean isSameColor(Figure other){
         return  false;
     }

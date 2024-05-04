@@ -110,7 +110,6 @@ public class Position {
      *
      * @return          the <code>am.aua.quarto.core.figures.Position</code> object
      */
-
     public static Position generatePosition(int row, int column){
         return new Position(row, column);
     }

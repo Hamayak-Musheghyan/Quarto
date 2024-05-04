@@ -1,6 +1,6 @@
 package am.aua.quarto.core.figures;
 
-public class Figure implements Puttable, Cloneable{
+public abstract class Figure implements Puttable, Cloneable{
 
     Color color;
     Height height;

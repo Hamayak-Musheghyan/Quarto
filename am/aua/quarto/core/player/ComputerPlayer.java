@@ -13,4 +13,12 @@ public class ComputerPlayer extends Player{
         super("Computer");
         this.difficulty = Difficulty.valueOf(difficulty);
     }
+
+    public void setDifficulty(String difficulty){
+        this.difficulty = Difficulty.valueOf(difficulty);
+    }
+
+    public Difficulty getDifficulty(){
+        return this.difficulty;
+    }
 }
