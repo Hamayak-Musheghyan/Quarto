@@ -8,6 +8,6 @@ public class DoubleMoveCard extends Card{
         super("You got a double move card!!!", 100);
     }
     public void act(Quarto game){
-        game.setCounter(game.getCounter()-1);
+        game.setCounter(game.getCounter());
     }
 }

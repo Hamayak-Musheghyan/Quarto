@@ -13,39 +13,42 @@ public class QuartoConsole {
     public void play(){
 
         Scanner sc = new Scanner(System.in);
-        this.game = new Quarto();
         System.out.println("What is Player1's name?");
-        game.setP1(sc.next());
+        String p1 = sc.next();
         System.out.println("Choose Player2 Mode: Human or Computer");
-        String input = sc.next();
+        String p2 = sc.next();
 
-        if (input.equalsIgnoreCase("human")) {
+        if (p2.equalsIgnoreCase("human")) {
             System.out.println("What is Player2's name?");
-            game.setP2(sc.next());
-        } else if (input.equalsIgnoreCase("computer")) {
+            this.game = new Quarto(p1, sc.next());
+        } else if (p2.equalsIgnoreCase("computer")) {
             System.out.println("Choose difficulty: EASY, MEDIUM, HARD");
             String difficulty = sc.next();
             if(difficulty.equalsIgnoreCase("easy"))
-                game.setP2("EASY");
+                this.game = new Quarto(p1, difficulty);
             else if (difficulty.equalsIgnoreCase("medium"))
-                game.setP2("MEDIUM");
+                this.game = new Quarto(p1, difficulty);
             else if (difficulty.equalsIgnoreCase("hard"))
-                game.setP2("HARD");
+                this.game = new Quarto(p1, difficulty);
         }
 
         printCurrentState();
 
         while(!game.isGameOver()){
+            if(this.game.getCounter() >= 16) {
+                System.out.println("Draw! None of you won.");
+                System.exit(0);
+            }
             int index;
             String playerName = null;
             String opponent = null;
-            if(game.getTurn() == 0){
-                playerName = game.getP1().getName();
-                opponent = game.getP2().getName();
+            if(game.getTurn()){
+                playerName = game.getPlayer(game.getTurn()).getName();
+                opponent = game.getPlayer(!game.getTurn()).getName();
             }
             else {
-                playerName = game.getP2().getName();
-                opponent = game.getP2().getName();
+                playerName = game.getPlayer(game.getTurn()).getName();
+                opponent = game.getPlayer(!game.getTurn()).getName();
             }
             System.out.println("Choose if you want to: \n1. Play;\n2. Buy a figure.");
             if(sc.nextInt()==1) {
@@ -65,13 +68,30 @@ public class QuartoConsole {
                 }
                 System.out.println("The move was successful!");
             }
+            /*
+            else{
+                Figure f = this.game.buyFromShop(this.game.getPlayer(game.getTurn()));
+                if(f==null){
+                    System.out.println("You don't have enough money to buy a figure, give a figure from the given set.");
+                    continue;
+                }
+                else{
+                    System.out.println(opponent + ", put the figure "+f.toString()+" on the board");
+                    boolean success = game.performPut(Position.generatePosition(sc.nextInt(), sc.nextInt()), f);
+                    while (!success) {
+                        System.out.println("The move is invalid! Try another position.");
+                        success = game.performPut(Position.generatePosition(sc.nextInt(), sc.nextInt()), f);
+                    }
+                    System.out.println("The move was successful!");
+                }
+            }
+             */
             printCurrentState();
         }
+        System.out.println("you won>>??????");
     }
 
-
-
-    public void printCurrentState (){
+    public void printCurrentState(){
         System.out.println("Current Board");
         for (int i = 0; i < Quarto.BOARD_LENGTH; i++) {
             for (int j = 0; j < Quarto.BOARD_HEIGHT; j++) {
@@ -83,7 +103,6 @@ public class QuartoConsole {
             }
             System.out.println();
         }
-        System.out.println("Number of moves is " + this.game.getCounter());
         System.out.println("Figures to use");
         int i = 1;
         for(Figure element: this.game.getFigures()){

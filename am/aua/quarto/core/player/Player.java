@@ -6,6 +6,7 @@ public abstract class Player implements Cloneable{
     private String name;
 
     private int points;
+    private SpecialFigure specialFigure;
 
 
 
@@ -26,6 +27,10 @@ public abstract class Player implements Cloneable{
 
     public void setPoints(int points){
         this.points = points;
+    }
+
+    public void setSpecialFigure(SpecialFigure specialFigure){
+        this.specialFigure = (SpecialFigure) specialFigure.clone();
     }
 
 

@@ -1,13 +1,11 @@
 package am.aua.quarto.core.figures;
 
-public abstract class Figure implements Puttable, Cloneable{
+public class Figure implements Puttable, Cloneable{
 
     Color color;
     Height height;
     Shape shape;
     Form form;
-
-
 
     public enum Color{WHITE, BLACK};
     public enum Height{TALL, SHORT};
@@ -52,14 +50,12 @@ public abstract class Figure implements Puttable, Cloneable{
     }
 
     public Figure clone(){
-        Figure copy = null;
         try {
-            copy = (Figure) super.clone();
+            return (Figure) super.clone();
         }
         catch (CloneNotSupportedException e){
-            System.out.println("Not cloneable");
+            return null;
         }
-        return copy;
     }
 
     public String toString(){
@@ -71,6 +67,21 @@ public abstract class Figure implements Puttable, Cloneable{
 
     public boolean isSame(Figure other){
         return isSameColor(other) && isSameHeight(other) && isSameShape(other) && isSameForm(other);
+    }
+    public boolean isSameByCharacteristic(int i, Figure other){
+        if(other == null)
+            return false;
+        switch(i){
+            case 0:
+                return isSameColor(other);
+            case 1:
+                return isSameHeight(other);
+            case 2:
+                return isSameShape(other);
+            case 3:
+                return isSameForm(other);
+        }
+        return false;
     }
     public boolean isSameColor(Figure other){
         return  this.color == other.color;

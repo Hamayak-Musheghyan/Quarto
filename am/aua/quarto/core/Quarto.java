@@ -8,7 +8,6 @@ public class Quarto {
     public static final int BOARD_LENGTH = 4;
     public static final int BOARD_HEIGHT = 4;
     public static final int MAX_RANDOM_CARD_NUMBER = 4;
-    private static final Figure EMPTY = null;
 
     private Position lastPosition;
 
@@ -20,10 +19,14 @@ public class Quarto {
     private Player p2;
 
 
-    public Quarto (){
+    public Quarto (String name1, String input){
 
         this.counter = 0;
         this.board = new Figure[BOARD_LENGTH][BOARD_HEIGHT];
+        this.p1 = new HumanPlayer(name1);
+
+        p1 = new HumanPlayer(name1);
+        setP2(input);
 
         // creation of the static figures
         ActualFigure WTRS = new ActualFigure(Figure.Color.WHITE, Figure.Height.TALL, Figure.Shape.ROUND, Figure.Form.SOLID);
@@ -75,8 +78,12 @@ public class Quarto {
     }
 
 
-    public int getTurn(){
-        return counter%2;
+    public boolean getTurn(){
+        return counter%2==0;
+    }
+
+    public void setCounter(int counter){
+        this.counter = counter;
     }
 
     public int getCounter(){
@@ -95,95 +102,82 @@ public class Quarto {
         return copy;
     }
 
-    public void setCounter(int counter){
-        this.counter = counter;
+    public Player getPlayer(boolean player){
+        if(player){
+            return this.p1.clone();
+        }
+        else{
+            return this.p2.clone();
+        }
     }
 
-    public Player getP1(){
-        return p1.clone();
-    }
-
-    public Player getP2(){
-        return p2.clone();
-    }
-
-    public void setP1(String name){
-        p1 = new HumanPlayer(name);
-    }
-
-    public void setP2(String name){
-       if(!name.equalsIgnoreCase("computer")){
-           p2 = new HumanPlayer(name);
+    private void setP2(String input){
+       if(input.equalsIgnoreCase("easy")){
+           p2 = new ComputerPlayer("EASY");
+       }
+       else if (input.equalsIgnoreCase("medium")){
+            p2 = new ComputerPlayer("MEDIUM");
+       }
+       else if (input.equalsIgnoreCase("hard")){
+            p2 = new ComputerPlayer("HARD");
        }
        else {
-           p2 = new ComputerPlayer();
+           p2 = new HumanPlayer(input);
        }
     }
 
     public boolean isGameOver(){
 
-//        if(this.lastPosition==null){
-//            return false;
-//        }
-//
-//        int[] rowOffsets = {0, 1, 1, -1};
-//        int[] columnOffsets = {1, 0, 1, 1};
-//
-//        for (int k = 0; k < rowOffsets.length; k++) {
-//            Position[] positions = new Position[3];
-//            int i = 0;
-//            int rowValue = rowOffsets[k];
-//            int columnValue = columnOffsets[k];
-//            int r = this.lastPosition.getRow();
-//            int c = this.lastPosition.getColumn();
-//
-//            if(k == 2 && r != c)
-//                return false;
-//            if(k == 3 && r + c != BOARD_LENGTH -1)
-//                return false;
-//
-//
-//            while (r < BOARD_HEIGHT && c < BOARD_LENGTH){
-//                Position addedPosition = new Position(r + rowValue, c + columnValue);
-//                positions[i] = addedPosition;
-//                r += rowValue;
-//                c+= columnValue;
-//                i++;
-//            }
-//
-//            r = this.lastPosition.getRow();
-//            c = this.lastPosition.getColumn();
-//
-//            while (r >= 0 && c >= 0){
-//                Position addedPosition = new Position(r - rowValue, c - columnValue);
-//                positions[i] = addedPosition;
-//                r -= rowValue;
-//                c-= columnValue;
-//                i++;
-//            }
-////            for (int i = 1; i < 4; i++) {
-////
-////                if ((k == 2 && this.lastPosition.getRow() == this.lastPosition.getColumn()) ||
-////                        (k == 3 && this.lastPosition.getRow() + this.lastPosition.getColumn() == BOARD_LENGTH)) {
-////                    Position addedPosition1 = new Position(this.lastPosition.getRow() + rowValue * i, this.lastPosition.getColumn() + columnValue * i);
-////                    Position addedPosition2 = new Position(this.lastPosition.getRow() - rankValue * i, this.lastPosition.getColumn() - columnValue * i);
-////                    if(addedPosition1!=null) {
-////                        positions.add(addedPosition1);
-////                    }
-////                    if(addedPosition2!=null){
-////                        positions.add(addedPosition2);
-////                    }
-////
-////                }
-////
-////            }
-//
-////            System.out.println(positions.size());
-//            if (isSameByPositions(positions)) {
-//                return true;
-//            }
-//            positions = new Position[3];
-//        }
+        if(this.lastPosition==null){
+            return false;
+        }
+
+        int[] rowOffsets = {0, 1, 1, -1};
+        int[] columnOffsets = {1, 0, 1, 1};
+
+        for (int k = 0; k < rowOffsets.length; k++) {
+            Position[] positions = new Position[3];
+
+            int i = 0;
+            int rowValue = rowOffsets[k];
+            int columnValue = columnOffsets[k];
+            int r = this.lastPosition.getRow();
+            int c = this.lastPosition.getColumn();
+
+            if(k == 2 && r != c)
+                return false;
+            if(k == 3 && r + c != BOARD_LENGTH -1)
+                return false;
+
+
+            r += rowValue;
+            c+= columnValue;
+            while (r < BOARD_HEIGHT && c < BOARD_LENGTH){
+                Position addedPosition = new Position(r, c); // (r + rowValue, c + columnValue)
+                positions[i] = addedPosition;
+                r += rowValue;
+                c+= columnValue;
+                i++;
+            }
+
+            r = this.lastPosition.getRow();
+            c = this.lastPosition.getColumn();
+
+            r -= rowValue;
+            c-= columnValue;
+            while (r >= 0 && c >= 0){
+                Position addedPosition = new Position(r, c); // (r - rowValue, c - columnValue)
+                positions[i] = addedPosition;
+                r -= rowValue;
+                c-= columnValue;
+                i++;
+            }
+
+            if (isSameByPositions(positions)) {
+                System.out.println("k == " + k);
+                return true;
+            }
+        }
 
         return false;
     }
@@ -221,23 +215,53 @@ public class Quarto {
 
         return false;
     }
+    /*
     private boolean isSameByPositions(Position[] positions){
         Puttable[][] copyBoard = this.getBoard();
         Figure cur = (Figure) copyBoard[this.lastPosition.getRow()][this.lastPosition.getColumn()];
         for (int i = 0; i < 4; i++) {
             Figure f = (Figure) copyBoard[positions[i].getRow()][positions[i].getColumn()];
+            if(f == null)
+                continue;
             boolean isWin = cur.isSameColor(f) || cur.isSameHeight(f) || cur.isSameForm(f) || cur.isSameShape(f);
             if(isWin)
                 return true;
         }
         return false;
     }
-    public boolean buy(int index){
-        if(p1.getPoints()>=shop[index].getPrice()){
-            p1.setSpecialFigure(shop[index]);
-            p1.setPoints(p1.getPoints()-shop[index].getPrice());
-            return true;
+
+     */
+
+    public boolean isSameByPositions(Position[] positions){
+        for (int i = 0; i < positions.length; i++) {
+            System.out.print("positions are " + positions[i] + " ");
+        }
+        System.out.println();
+        Puttable[][] copyBoard = this.getBoard();
+        Figure f = (Figure) copyBoard[this.lastPosition.getRow()][this.lastPosition.getColumn()];
+        if (f == null){
+            return false;
+        }
+        for (int i = 0; i < 4; i++) {
+            if (f.isSameByCharacteristic(i, (Figure) copyBoard[positions[0].getRow()][positions[0].getColumn()]) &&
+                    f.isSameByCharacteristic(i, (Figure) copyBoard[positions[1].getRow()][positions[1].getColumn()]) &&
+                    f.isSameByCharacteristic(i, (Figure) copyBoard[positions[2].getRow()][positions[2].getColumn()])){
+                System.out.println("characteristic is " + i);
+                return true;
+            }
         }
         return false;
     }
+
+
+    /*
+    public SpecialFigure buyFromShop(Player p){
+        if(p.getPoints()>=SpecialFigure.PRICE){
+            p.setPoints(p1.getPoints()-SpecialFigure.PRICE);
+            return SpecialFigure.specialFigures[(int)(Math.random()*10)+1];
+        }
+        return null;
+    }
+
+     */
 }

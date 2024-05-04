@@ -102,7 +102,7 @@ public class Position {
      *
      * @return          the <code>String</code> representation
      */
-    public String toString() { return "" + this.row + this.column; }
+    public String toString() { return this.row + " "  + this.column; }
 
     /**
      * Returns a <code>am.aua.quarto.core.figures.Position</code> object based on the provided
