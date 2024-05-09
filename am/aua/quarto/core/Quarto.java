@@ -2,96 +2,86 @@ package am.aua.quarto.core;
 
 import am.aua.quarto.core.cards.Card;
 import am.aua.quarto.core.figures.*;
-import am.aua.quarto.core.player.*;
+import am.aua.quarto.core.players.*;
 
-public class Quarto {
+public class Quarto implements Cloneable{
+
+    // static variables
     public static final int BOARD_LENGTH = 4;
     public static final int BOARD_HEIGHT = 4;
     public static final int MAX_RANDOM_CARD_NUMBER = 4;
 
+    // instance variables
     private Position lastPosition;
-
-    private SpecialFigure[] shop;
     private Puttable[][] board;
     private int counter;
+    private boolean turn;
     private ActualFigure[] figures;
     private HumanPlayer p1;
     private Player p2;
 
 
-    public Quarto (String name1, String input){
+    // the only constructor
+    public Quarto (String name, String input){
 
+        // initialises instance variables to default values
         this.counter = 0;
-        this.board = new Figure[BOARD_LENGTH][BOARD_HEIGHT];
-        this.p1 = new HumanPlayer(name1);
+        this.turn = false;
+        this.board = new Puttable[BOARD_LENGTH][BOARD_HEIGHT];
 
-        p1 = new HumanPlayer(name1);
-        setP2(input);
-
-        // creation of the static figures
-        ActualFigure WTRS = new ActualFigure(Figure.Color.WHITE, Figure.Height.TALL, Figure.Shape.ROUND, Figure.Form.SOLID);
-        ActualFigure WTRH = new ActualFigure(Figure.Color.WHITE, Figure.Height.TALL, Figure.Shape.ROUND, Figure.Form.HOLLOW);
-        ActualFigure WTSS = new ActualFigure(Figure.Color.WHITE, Figure.Height.TALL, Figure.Shape.SQUARE, Figure.Form.SOLID);
-        ActualFigure WTSH = new ActualFigure(Figure.Color.WHITE, Figure.Height.TALL, Figure.Shape.SQUARE, Figure.Form.HOLLOW);
-
-        ActualFigure WSRS = new ActualFigure(Figure.Color.WHITE, Figure.Height.SHORT, Figure.Shape.ROUND, Figure.Form.SOLID);
-        ActualFigure WSRH = new ActualFigure(Figure.Color.WHITE, Figure.Height.SHORT, Figure.Shape.ROUND, Figure.Form.HOLLOW);
-        ActualFigure WSSS = new ActualFigure(Figure.Color.WHITE, Figure.Height.SHORT, Figure.Shape.SQUARE, Figure.Form.SOLID);
-        ActualFigure WSSH = new ActualFigure(Figure.Color.WHITE, Figure.Height.SHORT, Figure.Shape.SQUARE, Figure.Form.HOLLOW);
-
-        ActualFigure BTRS = new ActualFigure(Figure.Color.BLACK, Figure.Height.TALL, Figure.Shape.ROUND, Figure.Form.SOLID);
-        ActualFigure BTRH = new ActualFigure(Figure.Color.BLACK, Figure.Height.TALL, Figure.Shape.ROUND, Figure.Form.HOLLOW);
-        ActualFigure BTSS = new ActualFigure(Figure.Color.BLACK, Figure.Height.TALL, Figure.Shape.SQUARE, Figure.Form.SOLID);
-        ActualFigure BTSH = new ActualFigure(Figure.Color.BLACK, Figure.Height.TALL, Figure.Shape.SQUARE, Figure.Form.HOLLOW);
-
-        ActualFigure BSRS = new ActualFigure(Figure.Color.BLACK, Figure.Height.SHORT, Figure.Shape.ROUND, Figure.Form.SOLID);
-        ActualFigure BSRH = new ActualFigure(Figure.Color.BLACK, Figure.Height.SHORT, Figure.Shape.ROUND, Figure.Form.HOLLOW);
-        ActualFigure BSSS = new ActualFigure(Figure.Color.BLACK, Figure.Height.SHORT, Figure.Shape.SQUARE, Figure.Form.SOLID);
-        ActualFigure BSSH = new ActualFigure(Figure.Color.BLACK, Figure.Height.SHORT, Figure.Shape.SQUARE, Figure.Form.HOLLOW);
-
-        this.figures = new ActualFigure[]{WTRS, WTRH, WTSS, WTSH, WSRS, WSRH, WSSS, WSSH, BTRS, BTRH, BTSS, BTSH, BSRS, BSRH, BSSS, BSSH};
-
-        for (int i = 0; i < MAX_RANDOM_CARD_NUMBER; i++) {
-            int randomRow = (int) Math.floor(Math.random()*MAX_RANDOM_CARD_NUMBER);
-            int randomColumn = (int) Math.floor(Math.random()*MAX_RANDOM_CARD_NUMBER);
-//            board[randomRow][randomColumn] = new Card("Message", 100); // needs to be changed by a random card
+        // sets players
+        try {
+            this.p1 = new HumanPlayer(name);
+            if (input.equalsIgnoreCase("easy")) {
+                p2 = new EasyComputerPlayer();
+            } else if (input.equalsIgnoreCase("medium")) {
+                p2 = new MediumComputerPlayer();
+            }
+//            } else if (input.equalsIgnoreCase("hard")) {
+//                p2 = new HardComputerPlayer();
+//            }
+            else {
+                p2 = new HumanPlayer(input);
+            }
+        }
+        catch (NullPointerException e){
+            System.out.println(e.getMessage());
+            System.exit(0);
         }
 
-//        shop = new SpecialFigure[5];
-//        for (int i = 0; i < 5; i++) {
-//            int index = (int)(Math.random()*10)+1;
-//            shop[i] = SpecialFigure.specialFigures[index];
-//        }
+        // creation of the static figures
+        this.figures = new ActualFigure[16];
+        for (int i = 0; i < ActualFigure.actualFigures.length; i++) {
+            figures[i] = ActualFigure.actualFigures[i].clone();
+        }
+
+        // random creation of cards
+        for (int i = 0; i < MAX_RANDOM_CARD_NUMBER; i++) {
+            int randomRow = (int) (Math.random() * 4);
+            int randomColumn = (int) (Math.random() * 4);
+            board[randomRow][randomColumn] = new Card("This is a card", 100);
+        }
+
     }
 
-    public Puttable[][] getBoard(){ // change when cards are added
+    public Puttable[][] getBoard(){
         Puttable[][] newBoard = new Puttable[BOARD_LENGTH][BOARD_HEIGHT];
         for (int i = 0; i < BOARD_LENGTH; i++) {
             for (int j = 0; j < BOARD_HEIGHT; j++) {
-
                 if(this.board[i][j] != null)
                     newBoard[i][j] = this.board[i][j].clone();
-                // add condition for cards
             }
         }
         return newBoard;
     }
 
-
     public boolean getTurn(){
-        return counter%2==0;
+        return this.turn;
     }
 
-    public void setCounter(int counter){
-        this.counter = counter;
-    }
 
-    public int getCounter(){
-        return this.counter;
-    }
-
-    public Figure[] getFigures(){
-        Figure[] copy = new Figure[figures.length];
+    public ActualFigure[] getFigures(){
+        ActualFigure[] copy = new ActualFigure[figures.length];
         for (int i = 0; i < copy.length; i++) {
             if(figures[i] == null)
                     copy[i] = null;
@@ -102,28 +92,23 @@ public class Quarto {
         return copy;
     }
 
-    public Player getPlayer(boolean player){
-        if(player){
-            return this.p1.clone();
+    public void setFigureToNull(int i){
+        this.figures[i] = null;
+    }
+
+    public Player getPlayer(boolean turn){
+        if(turn){
+            return this.p1;
         }
         else{
-            return this.p2.clone();
+            return this.p2;
         }
     }
 
-    private void setP2(String input){
-       if(input.equalsIgnoreCase("easy")){
-           p2 = new ComputerPlayer("EASY");
-       }
-       else if (input.equalsIgnoreCase("medium")){
-            p2 = new ComputerPlayer("MEDIUM");
-       }
-       else if (input.equalsIgnoreCase("hard")){
-            p2 = new ComputerPlayer("HARD");
-       }
-       else {
-           p2 = new HumanPlayer(input);
-       }
+    public boolean isDraw(){
+        if(this.counter >= 16)
+            return true;
+        return false;
     }
 
     public boolean isGameOver(){
@@ -144,37 +129,37 @@ public class Quarto {
             int r = this.lastPosition.getRow();
             int c = this.lastPosition.getColumn();
 
-            if(k == 2 && r != c)
-                return false;
-            if(k == 3 && r + c != BOARD_LENGTH -1)
-                return false;
+            if (k == 2 && r != c)
+                continue;
+            if (k == 3 && (r + c) != BOARD_HEIGHT - 1) {
+                continue;
+            }
 
 
-            r += rowValue;
-            c+= columnValue;
-            while (r < BOARD_HEIGHT && c < BOARD_LENGTH){
-                Position addedPosition = new Position(r, c); // (r + rowValue, c + columnValue)
+            r -= rowValue;
+            c -= columnValue;
+            while (r >= 0 && c >= 0){
+                Position addedPosition = new Position(r, c);
                 positions[i] = addedPosition;
-                r += rowValue;
-                c+= columnValue;
+                r -= rowValue;
+                c -= columnValue;
                 i++;
             }
 
             r = this.lastPosition.getRow();
             c = this.lastPosition.getColumn();
 
-            r -= rowValue;
-            c-= columnValue;
-            while (r >= 0 && c >= 0){
-                Position addedPosition = new Position(r, c); // (r - rowValue, c - columnValue)
+            r += rowValue;
+            c += columnValue;
+            while (r < BOARD_HEIGHT && c < BOARD_LENGTH){
+                Position addedPosition = new Position(r, c);
                 positions[i] = addedPosition;
-                r -= rowValue;
-                c-= columnValue;
+                r += rowValue;
+                c += columnValue;
                 i++;
             }
 
             if (isSameByPositions(positions)) {
-                System.out.println("k == " + k);
                 return true;
             }
         }
@@ -182,22 +167,46 @@ public class Quarto {
         return false;
     }
 
+    public boolean isSameByPositions(Position[] positions){
+        Puttable[][] copyBoard = this.getBoard();
+        Figure f = (Figure) copyBoard[this.lastPosition.getRow()][this.lastPosition.getColumn()];
+        if (f == null){
+            return false;
+        }
+        for (int i = 0; i < 4; i++) {
+            if (f.isSameByCharacteristic(i, this.getFigureAt(positions[0])) &&
+                    f.isSameByCharacteristic(i, this.getFigureAt(positions[1])) &&
+                    f.isSameByCharacteristic(i, this.getFigureAt(positions[2]))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isFigure(Position p){
-        return board[p.getRow()][p.getColumn()] instanceof Figure;
+        if(p != null)
+            return board[p.getRow()][p.getColumn()] instanceof Figure;
+        return false;
     }
 
     public boolean isEmpty(Position p){
         return !(isFigure(p));
     }
 
-    private Figure getPieceAt(Position p){
+    public Figure getFigureAt(Position p){
         if(isEmpty(p))
             return  null;
         return (Figure) this.board[p.getRow()][p.getColumn()];
     }
 
-    public Figure takeFigure(int index){
-        Figure f = null;
+    public Card getCardAt(Position p){
+        if(this.board[p.getRow()][p.getColumn()] instanceof Card)
+            return ((Card) this.board[p.getRow()][p.getColumn()]).clone();
+        return null;
+    }
+
+    public ActualFigure takeFigure(int index){
+        ActualFigure f = null;
         if(figures[index] != null) {
             f = this.figures[index].clone();
         }
@@ -205,63 +214,73 @@ public class Quarto {
         return f;
     }
 
-     public boolean performPut (Position p, Figure f){
-        if(this.getPieceAt(p) == null && f != null){
+    public boolean performPut (Position p, Figure f){
+
+        if(this.getCardAt(p) != null){
+            this.getPlayer(getTurn()).setPoints(this.getCardAt(p).getPoint());
+        }
+
+        if(this.isEmpty(p) && f != null){
             this.board[p.getRow()][p.getColumn()] = f;
             lastPosition = p;
             counter++;
+            turn = !turn;
             return true;
         }
 
         return false;
     }
-    /*
-    private boolean isSameByPositions(Position[] positions){
-        Puttable[][] copyBoard = this.getBoard();
-        Figure cur = (Figure) copyBoard[this.lastPosition.getRow()][this.lastPosition.getColumn()];
-        for (int i = 0; i < 4; i++) {
-            Figure f = (Figure) copyBoard[positions[i].getRow()][positions[i].getColumn()];
-            if(f == null)
-                continue;
-            boolean isWin = cur.isSameColor(f) || cur.isSameHeight(f) || cur.isSameForm(f) || cur.isSameShape(f);
-            if(isWin)
-                return true;
+
+    public void setBoard(Position p, Figure f){
+        if(this.isEmpty(p)){
+            this.board[p.getRow()][p.getColumn()] = f;
         }
-        return false;
     }
 
-     */
+    public void setCounter(int counter){
+        this.counter = counter;
+    }
 
-    public boolean isSameByPositions(Position[] positions){
-        for (int i = 0; i < positions.length; i++) {
-            System.out.print("positions are " + positions[i] + " ");
-        }
-        System.out.println();
-        Puttable[][] copyBoard = this.getBoard();
-        Figure f = (Figure) copyBoard[this.lastPosition.getRow()][this.lastPosition.getColumn()];
-        if (f == null){
-            return false;
-        }
-        for (int i = 0; i < 4; i++) {
-            if (f.isSameByCharacteristic(i, (Figure) copyBoard[positions[0].getRow()][positions[0].getColumn()]) &&
-                    f.isSameByCharacteristic(i, (Figure) copyBoard[positions[1].getRow()][positions[1].getColumn()]) &&
-                    f.isSameByCharacteristic(i, (Figure) copyBoard[positions[2].getRow()][positions[2].getColumn()])){
-                System.out.println("characteristic is " + i);
-                return true;
-            }
-        }
-        return false;
+    public int getCounter(){
+        return this.counter;
+    }
+
+    public void setLastPosition(Position p){
+        this.lastPosition = p;
+    }
+
+    public void setTurn(boolean turn){
+        this.turn = turn;
     }
 
 
-    /*
     public SpecialFigure buyFromShop(Player p){
-        if(p.getPoints()>=SpecialFigure.PRICE){
-            p.setPoints(p1.getPoints()-SpecialFigure.PRICE);
-            return SpecialFigure.specialFigures[(int)(Math.random()*10)+1];
+        if(p.getPoints() >= SpecialFigure.PRICE){
+            p.setPoints(p1.getPoints() - SpecialFigure.PRICE);
+            return SpecialFigure.specialFigures[(int)(Math.random()*10)];
         }
         return null;
     }
 
-     */
+    public Quarto clone(){
+        Quarto clone = null;
+        try{
+            clone = (Quarto) super.clone();
+        } catch (CloneNotSupportedException e){
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }
+        return clone;
+    }
+
+    public Quarto (Quarto that){
+        this.counter = that.counter;
+        this.turn = that.turn;
+        this.board = that.getBoard();
+        this.p1 = that.p1;
+        this.p2 = that.p2;
+        this.figures = that.getFigures();
+        this.lastPosition = Position.generatePosition(that.lastPosition.getRow(), that.lastPosition.getColumn());
+    }
+
 }

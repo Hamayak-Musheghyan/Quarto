@@ -17,4 +17,8 @@ public class SuperAntiJoker extends SpecialFigure {
     public boolean isSameForm(Figure other){
         return  false;
     }
+
+    public String toString(){
+        return "----";
+    }
 }

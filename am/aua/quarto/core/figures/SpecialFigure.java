@@ -2,19 +2,25 @@ package am.aua.quarto.core.figures;
 
 public abstract class SpecialFigure extends Figure{
 
-    public final int PRICE = 100;
+    public static final int PRICE = 100;
 
     public static SpecialFigure[] specialFigures = {
-            new SuperJoker(), new ColorJoker(randomHeight(), randomShape(), randomForm()),
-            new HeightJoker(randomColor(), randomShape(), randomForm()), new ShapeJoker(randomColor(), randomHeight(), randomForm()),
-            new FormJoker(randomColor(), randomHeight(), randomShape()), new ColorAntiJoker(randomHeight(), randomShape(), randomForm()),
-            new HeightAntiJoker(randomColor(), randomShape(), randomForm()), new ShapeAntiJoker(randomColor(), randomHeight(), randomForm()),
-            new FormAntiJoker(randomColor(), randomHeight(), randomShape()), new SuperAntiJoker()
+            new SuperJoker(),
+            new ColorJoker(randomHeight(), randomShape(), randomForm()),
+            new HeightJoker(randomColor(), randomShape(), randomForm()),
+            new ShapeJoker(randomColor(), randomHeight(), randomForm()),
+            new FormJoker(randomColor(), randomHeight(), randomShape()),
+            new ColorAntiJoker(randomHeight(), randomShape(), randomForm()),
+            new HeightAntiJoker(randomColor(), randomShape(), randomForm()), 
+            new ShapeAntiJoker(randomColor(), randomHeight(), randomForm()),
+            new FormAntiJoker(randomColor(), randomHeight(), randomShape()),
+            new SuperAntiJoker()
     };
 
     public SpecialFigure(int price){
-
     }
+
+    public abstract String toString();
 
     public int getPrice(){
         return PRICE;

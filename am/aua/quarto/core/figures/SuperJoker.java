@@ -4,6 +4,11 @@ public class SuperJoker extends SpecialFigure {
     public SuperJoker(){
         super(600);
     }
+
+    public String toString(){
+        return "++++";
+    }
+
     public boolean isSameColor(Figure other){
         return  true;
     }

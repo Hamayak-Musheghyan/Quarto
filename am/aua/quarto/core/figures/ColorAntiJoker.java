@@ -9,6 +9,13 @@ public class ColorAntiJoker extends SpecialFigure {
         this.color = null;
     }
 
+    public String toString(){
+        return "-" +
+                height.toString().charAt(0) +
+                shape.toString().charAt(0) +
+                form.toString().charAt(0);
+    }
+
 
     public boolean isSameColor(Figure other){
         return  false;

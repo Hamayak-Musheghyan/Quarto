@@ -9,7 +9,12 @@ public class ShapeAntiJoker extends SpecialFigure {
         this.color = color;
     }
 
-
+    public String toString(){
+        return "" + color.toString().charAt(0) +
+                height.toString().charAt(0) +
+                "-" +
+                form.toString().charAt(0);
+    }
     public boolean isSameShape(Figure other){
         return  false;
     }

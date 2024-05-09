@@ -3,7 +3,7 @@ package am.aua.quarto.core.cards;
 import am.aua.quarto.core.Quarto;
 import am.aua.quarto.core.figures.Puttable;
 
-public abstract class Card implements Puttable {
+public class Card implements Puttable {
     private String message;
     private int point;
 
@@ -21,5 +21,9 @@ public abstract class Card implements Puttable {
         }
     }
 
-    public abstract void act (Quarto game);
+    public int getPoint(){
+        return this.point;
+    }
+
+    public void act (Quarto game){};
 }

@@ -1,6 +1,6 @@
 package am.aua.quarto.core.figures;
 
-public class Figure implements Puttable, Cloneable{
+public abstract class  Figure implements Puttable, Cloneable{
 
     Color color;
     Height height;
@@ -65,9 +65,7 @@ public class Figure implements Puttable, Cloneable{
                 form.toString().charAt(0);
     }
 
-    public boolean isSame(Figure other){
-        return isSameColor(other) && isSameHeight(other) && isSameShape(other) && isSameForm(other);
-    }
+
     public boolean isSameByCharacteristic(int i, Figure other){
         if(other == null)
             return false;

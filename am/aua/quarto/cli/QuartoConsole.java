@@ -2,10 +2,10 @@ package am.aua.quarto.cli;
 
 import am.aua.quarto.core.*;
 import am.aua.quarto.core.figures.Figure;
-import am.aua.quarto.core.player.ComputerPlayer;
-import am.aua.quarto.core.player.Player;
-import java.util.Scanner;
+import am.aua.quarto.core.figures.SpecialFigure;
+import am.aua.quarto.core.players.HumanPlayer;
 
+import java.util.Scanner;
 
 public class QuartoConsole {
     private Quarto game;
@@ -22,73 +22,75 @@ public class QuartoConsole {
             System.out.println("What is Player2's name?");
             this.game = new Quarto(p1, sc.next());
         } else if (p2.equalsIgnoreCase("computer")) {
-            System.out.println("Choose difficulty: EASY, MEDIUM, HARD");
+            System.out.println("Choose difficulty: EASY, MEDIUM");
             String difficulty = sc.next();
-            if(difficulty.equalsIgnoreCase("easy"))
-                this.game = new Quarto(p1, difficulty);
-            else if (difficulty.equalsIgnoreCase("medium"))
-                this.game = new Quarto(p1, difficulty);
-            else if (difficulty.equalsIgnoreCase("hard"))
-                this.game = new Quarto(p1, difficulty);
+            this.game = new Quarto(p1, difficulty);
         }
 
         printCurrentState();
 
-        while(!game.isGameOver()){
-            if(this.game.getCounter() >= 16) {
-                System.out.println("Draw! None of you won.");
-                System.exit(0);
-            }
-            int index;
-            String playerName = null;
-            String opponent = null;
-            if(game.getTurn()){
-                playerName = game.getPlayer(game.getTurn()).getName();
-                opponent = game.getPlayer(!game.getTurn()).getName();
-            }
-            else {
-                playerName = game.getPlayer(game.getTurn()).getName();
-                opponent = game.getPlayer(!game.getTurn()).getName();
-            }
-            System.out.println("Choose if you want to: \n1. Play;\n2. Buy a figure.");
-            if(sc.nextInt()==1) {
-                System.out.println(playerName + ", give the index of figure for the opponent");
-                index = sc.nextInt();
-                System.out.println(opponent + ", put the figure on the board");
 
-                Figure f = game.takeFigure(index - 1);
-                if (f == null) {
-                    System.out.println("Invalid index, try again.");
-                    continue;
-                }
-                boolean success = game.performPut(Position.generatePosition(sc.nextInt(), sc.nextInt()), f);
-                while (!success) {
-                    System.out.println("The move is invalid! Try another position.");
-                    success = game.performPut(Position.generatePosition(sc.nextInt(), sc.nextInt()), f);
-                }
-                System.out.println("The move was successful!");
+        while (!game.isGameOver()) {
+
+            if(game.isDraw()){
+                System.out.println("Draw! Nobody Won.");
+                break;
             }
-            /*
-            else{
-                Figure f = this.game.buyFromShop(this.game.getPlayer(game.getTurn()));
-                if(f==null){
-                    System.out.println("You don't have enough money to buy a figure, give a figure from the given set.");
-                    continue;
-                }
-                else{
-                    System.out.println(opponent + ", put the figure "+f.toString()+" on the board");
-                    boolean success = game.performPut(Position.generatePosition(sc.nextInt(), sc.nextInt()), f);
-                    while (!success) {
-                        System.out.println("The move is invalid! Try another position.");
-                        success = game.performPut(Position.generatePosition(sc.nextInt(), sc.nextInt()), f);
-                    }
-                    System.out.println("The move was successful!");
-                }
+
+            String playerName;
+            String opponent;
+
+            playerName = game.getPlayer(game.getTurn()).getName();
+            opponent = game.getPlayer(!game.getTurn()).getName();
+
+
+//                System.out.println("You have enough points for shopping! Choose if you want to: \n1. Play,\n2. Buy a figure.");
+//                int input = sc.nextInt();
+//                while (input != 1 && input != 2) {
+//                    System.out.println("Enter a valid number");
+//                    input = sc.nextInt();
+//                }
+//                if(input == 2){
+//                    Figure figure = this.game.buyFromShop(this.game.getPlayer(game.getTurn()));
+//                    if (figure == null) {
+//                        System.out.println("You don't have enough points to buy a figure, give a figure from the given set.");
+//                        continue;
+//                    }
+//                    else {
+//                        System.out.println(opponent + ", put the figure " + figure +  " on the board, as given by " + playerName);
+//                        game.getPlayer(!game.getTurn()).setPositionToPut(Position.generatePosition(sc.nextInt(), sc.nextInt()));
+//                    }
+//                }
+
+            if(game.getPlayer(game.getTurn()) instanceof HumanPlayer){
+                System.out.println(playerName + ", give the index of figure for " + opponent);
+                ((HumanPlayer) game.getPlayer(game.getTurn())).selectFigure(sc.nextInt()-1);
             }
-             */
+            Figure f = game.getPlayer(game.getTurn()).takeFigure(game);
+            if (f == null) {
+                System.out.println("Invalid index, try again.");
+                continue;
+            }
+
+            if(game.getPlayer(!game.getTurn()) instanceof HumanPlayer){
+                System.out.println(opponent + ", put the figure " + f +  " on the board, as given by " + playerName);
+                game.getPlayer(!game.getTurn()).setPositionToPut(Position.generatePosition(sc.nextInt(), sc.nextInt()));
+            }
+
+            boolean success = game.getPlayer(!game.getTurn()).performPut(game, f);
+            while (!success) {
+                System.out.println("The move is invalid! Try another position.");
+                game.getPlayer(!game.getTurn()).setPositionToPut(Position.generatePosition(sc.nextInt(), sc.nextInt()));
+                success = game.getPlayer(!game.getTurn()).performPut(game, f);
+            }
+
+            System.out.println("The move was successful!");
+            if(game.getPlayer(!game.getTurn()) instanceof HumanPlayer)
+                System.out.println(game.getPlayer(!game.getTurn()).getName() + ", your points are: " + game.getPlayer(!game.getTurn()).getPoints());
+
             printCurrentState();
         }
-        System.out.println("you won>>??????");
+        System.out.println(game.getPlayer(game.getTurn()).getName().toUpperCase() + "!!! YOU WON!!! CONGRATS!!!");
     }
 
     public void printCurrentState(){
@@ -116,6 +118,7 @@ public class QuartoConsole {
         }
         System.out.println();
     }
+
 
     public static void main(String[] args) {
         QuartoConsole q = new QuartoConsole();

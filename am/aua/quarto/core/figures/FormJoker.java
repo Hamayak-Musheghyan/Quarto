@@ -10,6 +10,12 @@ public class FormJoker extends SpecialFigure{
         this.color = color;
     }
 
+    public String toString(){
+        return "" + color.toString().charAt(0) +
+                height.toString().charAt(0) +
+                shape.toString().charAt(0) +
+                "+";
+    }
     public boolean isSameForm(Figure other){
         return  true;
     }

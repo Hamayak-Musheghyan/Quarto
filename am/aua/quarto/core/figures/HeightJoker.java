@@ -9,6 +9,13 @@ public class HeightJoker extends SpecialFigure {
     }
 
 
+    public String toString(){
+        return "" + color.toString().charAt(0) +
+                "+" +
+                shape.toString().charAt(0) +
+                form.toString().charAt(0);
+    }
+
     public boolean isSameHeight(Figure other){
         return  true;
     }
