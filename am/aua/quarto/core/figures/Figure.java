@@ -65,7 +65,6 @@ public abstract class  Figure implements Puttable, Cloneable{
                 form.toString().charAt(0);
     }
 
-
     public boolean isSameByCharacteristic(int i, Figure other){
         if(other == null)
             return false;
@@ -82,19 +81,31 @@ public abstract class  Figure implements Puttable, Cloneable{
         return false;
     }
     public boolean isSameColor(Figure other){
-        System.out.println("Figure isSameColor");
+        if(other.color == null && (other instanceof ColorJoker || other instanceof SuperJoker))
+            return true;
+        else if(other.color == null && (other instanceof ColorAntiJoker || other instanceof SuperAntiJoker))
+            return false;
         return  this.color == other.color;
     }
     public boolean isSameHeight(Figure other){
-        System.out.println("Figure isSameHeight");
+        if(other.height == null && (other instanceof HeightJoker || other instanceof SuperJoker))
+            return true;
+        else if(other.height == null && (other instanceof HeightAntiJoker || other instanceof SuperAntiJoker))
+            return false;
         return this.height == other.height;
     }
     public boolean isSameShape(Figure other){
-        System.out.println("Figure isSameShape");
+        if(other.shape == null && (other instanceof ShapeJoker || other instanceof SuperJoker))
+            return true;
+        else if(other.shape == null && (other instanceof ShapeAntiJoker || other instanceof SuperAntiJoker))
+            return false;
         return this.shape == other.shape;
     }
     public boolean isSameForm(Figure other){
-        System.out.println("Figure isSameForm");
+        if(other.form == null && (other instanceof FormJoker || other instanceof SuperJoker))
+            return true;
+        else if(other.form == null && (other instanceof FormAntiJoker || other instanceof SuperAntiJoker))
+            return false;
         return  this.form == other.form;
     }
 }

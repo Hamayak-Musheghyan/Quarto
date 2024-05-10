@@ -1,7 +1,8 @@
 package am.aua.quarto.core.figures;
 
 public class ActualFigure extends Figure{
-    // there is nor
+    // there is no need to make this class,
+    // we consider that in the future we will make functionalities that will be only for ActualFigureActualFigures
     public ActualFigure(Color color, Height height, Shape shape, Form form){
         super(color, height, shape, form);
     }

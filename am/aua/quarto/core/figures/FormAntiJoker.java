@@ -14,10 +14,7 @@ public class FormAntiJoker extends SpecialFigure {
         return "" + color.toString().charAt(0) +
                 height.toString().charAt(0) +
                 shape.toString().charAt(0) +
-                "*";
+                "#";
     }
 
-    public boolean isSameForm(Figure other){
-        return  false;
-    }
 }

@@ -17,7 +17,7 @@ public abstract class Player implements Cloneable{
 
 
     public Player(String name) throws NullPointerException{
-        this.points = 1000000;
+        this.points = 0;
         availableFigureIndexes = new ArrayList<>();
         for(int i = 0; i < NUMBER_OF_FIGURES; i++)
             availableFigureIndexes.add(i);

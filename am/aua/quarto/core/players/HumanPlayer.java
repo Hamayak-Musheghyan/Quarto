@@ -9,9 +9,7 @@ import am.aua.quarto.core.figures.Figure;
 
 public class HumanPlayer extends Player{
 
-    private int selectedFigure; //TODO: for me or for opponent player????, change the name
-
-
+    private int selectedFigure;
 
     public HumanPlayer(String name){
         super(name);
@@ -19,12 +17,11 @@ public class HumanPlayer extends Player{
 
     public void selectFigure(int selectedFigure) throws InvalidMoveException {
 
-        if(availableFigureIndexes.get(selectedFigure) == null){
+        if(!Player.availableFigureIndexes.contains(selectedFigure)){
             throw new InvalidMoveException("Invalid Index for Figure");
         }
         this.selectedFigure = selectedFigure;
-        //Player.availableFigureIndexes.remove(selectedFigure); // TODO:: check if works
-        availableFigureIndexes.set(selectedFigure, null);
+        Player.availableFigureIndexes.remove((Integer) selectedFigure);
 
     }
 

@@ -17,9 +17,7 @@ public class ColorJoker extends SpecialFigure{
                 form.toString().charAt(0);
     }
 
-    public boolean isSameColor(Figure other){
-        System.out.println("ColorJoker check");
-        return  true;
-    }
+
+
 
 }

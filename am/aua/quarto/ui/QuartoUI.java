@@ -22,15 +22,14 @@ public class QuartoUI extends JFrame{
     private boolean isFigureTaken;
     private BoardSquareUI selectedFigureSquare;
 
-    public QuartoUI() {
+    public QuartoUI(String name1, String mode, String input) {
         setTitle("Quarto Game");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
 
-
-        game = new Quarto("ina", "human", "gor");
+        game = new Quarto(name1, mode, input);
 
         JPanel figurePanel = new JPanel(new FlowLayout());
         figurePanel.setPreferredSize(new Dimension(400, 100));
@@ -78,6 +77,7 @@ public class QuartoUI extends JFrame{
                                 game.getPlayer(!game.getTurn()).setPositionToPut(Position.generatePosition(I, J));
                             }
                             if (game.getPlayer(!game.getTurn()).performPut(game, taken[0])) {
+                                selectedFigureSquare.setIcon(null);
                                 updatePieces(true);
                                 isFigureTaken = false;
                                 if (game.isGameOver()) {
@@ -93,14 +93,17 @@ public class QuartoUI extends JFrame{
             }
         }
 
+        JPanel FiguresMainPanel = new JPanel(new BorderLayout());
         JPanel selectedFigurePanel = new JPanel(new FlowLayout());
-        selectedFigurePanel.setPreferredSize(new Dimension(400, 50));
+        selectedFigurePanel.setPreferredSize(new Dimension(50, 50));
 
-        JLabel selectedFigureLabel = new JLabel("Selected Figure:");
+        JLabel selectedFigureLabel = new JLabel("Bought Figure:");
         selectedFigurePanel.add(selectedFigureLabel);
 
         selectedFigureSquare = new BoardSquareUI();
         selectedFigurePanel.add(selectedFigureSquare);
+        FiguresMainPanel.setSize(50, 50);
+        FiguresMainPanel.add(selectedFigurePanel, BorderLayout.SOUTH);
 
 
         JButton shop = new JButton();
@@ -112,6 +115,8 @@ public class QuartoUI extends JFrame{
                                    public void actionPerformed(ActionEvent e) {
                                        if(game.getPlayer(game.getTurn()).getPoints() >= SpecialFigure.PRICE){
                                            taken[0] = game.buyFromShop(game.getPlayer(game.getTurn()));
+                                           Icon icon = new ImageIcon(taken[0].toString());
+                                           selectedFigureSquare.setIcon(icon);
                                        }
 
                                        else{
@@ -125,9 +130,11 @@ public class QuartoUI extends JFrame{
         JPanel shopPanel = new JPanel();
         shopPanel.add(shop);
 
-        add(figurePanel, BorderLayout.WEST);
+        FiguresMainPanel.add(figurePanel, BorderLayout.CENTER);
+        //add(figurePanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
         add(shopPanel, BorderLayout.SOUTH);
+        add(FiguresMainPanel, BorderLayout.WEST);
 
 
         setVisible(true);
@@ -154,6 +161,5 @@ public class QuartoUI extends JFrame{
             }
         }
     }
-
 
 }

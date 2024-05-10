@@ -6,6 +6,7 @@ import am.aua.quarto.core.figures.SpecialFigure;
 import am.aua.quarto.core.players.HumanPlayer;
 import am.aua.quarto.core.players.InvalidMoveException;
 
+
 import java.util.Scanner;
 
 public class QuartoConsole {
@@ -14,18 +15,28 @@ public class QuartoConsole {
     public void play() {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("What is Player1's name?");
-        String p1 = sc.next();
-        System.out.println("Choose Player2 Mode: Human or Computer");
-        String p2 = sc.next();
-
-        if (p2.equalsIgnoreCase("human")) {
-            System.out.println("What is Player2's name?");
-            this.game = new Quarto(p1, p2, sc.next());
-        } else if (p2.equalsIgnoreCase("computer")) {
-            System.out.println("Choose difficulty: EASY, MEDIUM");
-            String difficulty = sc.next();
-            this.game = new Quarto(p1, p2, difficulty);
+        while(true) {
+            System.out.println("What is Player1's name?");
+            String p1 = sc.next();
+            System.out.println("Choose Player2 Mode: 1 for Human or 2 for Computer");
+            int p2 = sc.nextInt();
+            if (p2 == 1) {
+                System.out.println("What is Player2's name?");
+                this.game = new Quarto(p1, "human", sc.next());
+                break;
+            } else if (p2 == 2) {
+                System.out.println("Choose difficulty: 1 for EASY, 2 for MEDIUM");
+                int difficulty = sc.nextInt();
+                if (difficulty == 1) {
+                    this.game = new Quarto(p1, "computer", "EASY");
+                    break;
+                }
+                else if (difficulty == 2) {
+                    this.game = new Quarto(p1, "computer", "MEDIUM");
+                    break;
+                }
+            }
+            System.out.println("Wrong input! Initializing the game again...");
         }
 
         printCurrentState();
@@ -63,6 +74,8 @@ public class QuartoConsole {
                 }
             }
 
+
+
             if(game.getPlayer(game.getTurn()) instanceof HumanPlayer){
                 System.out.println(playerName + ", give the index of figure for " + opponent);
                 try {
@@ -71,7 +84,10 @@ public class QuartoConsole {
                     System.out.println("Invalid index for the figure. Try again");
                     continue;
                 }
-            } // TODO: check why it doesn't work with computers.
+            }
+
+
+            // TODO: check why it doesn't work with computers.
             Figure f = game.getPlayer(game.getTurn()).takeFigure(game);
 
             if(game.getPlayer(!game.getTurn()) instanceof HumanPlayer){
@@ -125,8 +141,4 @@ public class QuartoConsole {
         return false;
     }
 
-    public static void main(String[] args) {
-        QuartoConsole q = new QuartoConsole();
-        q.play();
-    }
 }

@@ -24,13 +24,13 @@ public abstract class  ComputerPlayer extends Player{
     }
 
     public ActualFigure takeFigure(Quarto game) {
-        // TODO:: do we need the while loop
         Random random = new Random();
         int index;
         do {
             index = random.nextInt(Player.availableFigureIndexes.size());
         } while (game.getFigures()[Player.availableFigureIndexes.get(index)] == null);
-        Player.availableFigureIndexes.remove(index); // TODO:: check if works
+        Player.availableFigureIndexes.set(index, null);
+         Player.availableFigureIndexes.remove(index);
         ActualFigure selectedFigure = game.getFigures()[index];
         game.setFigureToNull(index);
         return selectedFigure;
