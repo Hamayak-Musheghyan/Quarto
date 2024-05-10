@@ -1,20 +1,36 @@
-QUARTO BoardGame
+How to Play
 
-**How to Play**
+Setup
 
-Players take turns selecting a piece from the pile and giving it to their opponent, who places it on the board. The opponent then chooses a piece for the first player to place on the board. The goal is to create a line of four pieces with a common characteristic.
+Game Board: Set up the 4x4 game board.
 
-**Winning the Game**
-
-A player wins by being the first to create a line of four pieces with a common characteristic, either horizontally, vertically, or diagonally.
+Pieces: There are 16 unique pieces, each with four different characteristics: color, height, shape, and form. No two pieces are identical.
 
 
-**Classes Defintion:**
+Gameplay
 
-The project will have 3 classes. 
+Turns: Players take turns placing pieces on the board.
 
-Board class: this creates the 4x4 board for the game.
+Piece Selection: On each turn, a player selects a piece from the available pool of pieces.
 
-Figures class: for defining the 16 figures. Each will have 4 characteristics: colour(light/dark), height(tall/short), shape(square/round), form(hollow/solid).
+Placement: The selected piece is placed on an empty space on the board.
 
-Play class: defines the rules of the game.
+Objective: The goal is to create a line of four pieces that share a common characteristic. This can be done horizontally, vertically, or diagonally.
+
+Winning: The first player to create such a line wins the game.
+
+
+Special Figures
+
+Jokers: There are two special figures known as "jokers" - one regular joker and one super joker. These jokers can match any characteristic, making them versatile pieces for creating winning lines.
+
+AntiJokers: Similarly, there are two "antijokers" - one regular antijoker and one super antijoker. These antijokers cannot match any characteristic, providing a strategic challenge when selecting pieces.
+
+Super Joker and Super AntiJoker: These figures have additional properties beyond regular jokers and antijokers, adding complexity and excitement to the game.
+
+
+End of Game
+
+The game ends when one player successfully creates a line of four pieces with a common characteristic.
+
+If all spaces on the board are filled without a winning line, the game ends in a draw.
