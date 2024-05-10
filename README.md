@@ -1,5 +1,5 @@
 ATTENTION !!!!!!!!
-OUR FINAL CODE ON THE MASTER BRANCH
+OUR FINAL CODE IS ON THE MASTER BRANCH
 
 Our presentation linke
 https://www.canva.com/design/DAGE2q5cpRw/NaGhRr8Lx66p5aI_z2wh8Q/edit?utm_content=DAGE2q5cpRw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
