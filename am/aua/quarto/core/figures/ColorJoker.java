@@ -2,7 +2,6 @@ package am.aua.quarto.core.figures;
 public class ColorJoker extends SpecialFigure{
 
 
-
     public ColorJoker(Height height, Shape shape, Form form){
         super(100);
         this.height = height;
@@ -19,6 +18,7 @@ public class ColorJoker extends SpecialFigure{
     }
 
     public boolean isSameColor(Figure other){
+        System.out.println("ColorJoker check");
         return  true;
     }
 

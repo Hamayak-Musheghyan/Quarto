@@ -5,14 +5,22 @@ import am.aua.quarto.core.Quarto;
 import am.aua.quarto.core.figures.ActualFigure;
 import am.aua.quarto.core.figures.Figure;
 
+import java.util.ArrayList;
+
 public abstract class Player implements Cloneable{
     private String name;
 
     private int points;
     private Position positionToPut;
+    protected static ArrayList<Integer> availableFigureIndexes;
+    protected static final int NUMBER_OF_FIGURES = 16; // number of actual figures
 
 
     public Player(String name) throws NullPointerException{
+        this.points = 1000000;
+        availableFigureIndexes = new ArrayList<>();
+        for(int i = 0; i < NUMBER_OF_FIGURES; i++)
+            availableFigureIndexes.add(i);
         if(name != null)
             this.name = name;
         else

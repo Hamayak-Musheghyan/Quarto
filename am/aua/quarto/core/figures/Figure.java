@@ -69,7 +69,7 @@ public abstract class  Figure implements Puttable, Cloneable{
     public boolean isSameByCharacteristic(int i, Figure other){
         if(other == null)
             return false;
-        switch(i){
+        switch (i){
             case 0:
                 return isSameColor(other);
             case 1:
@@ -82,15 +82,19 @@ public abstract class  Figure implements Puttable, Cloneable{
         return false;
     }
     public boolean isSameColor(Figure other){
+        System.out.println("Figure isSameColor");
         return  this.color == other.color;
     }
     public boolean isSameHeight(Figure other){
+        System.out.println("Figure isSameHeight");
         return this.height == other.height;
     }
     public boolean isSameShape(Figure other){
+        System.out.println("Figure isSameShape");
         return this.shape == other.shape;
     }
     public boolean isSameForm(Figure other){
+        System.out.println("Figure isSameForm");
         return  this.form == other.form;
     }
 }

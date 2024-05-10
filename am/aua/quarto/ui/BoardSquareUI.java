@@ -25,6 +25,7 @@ public class BoardSquareUI extends JButton {
         return new int[]{x, y};
     }
 
+
     public void setPiece(String s){
         Icon icon = null;
         switch (s){
@@ -79,6 +80,10 @@ public class BoardSquareUI extends JButton {
         }
         setIcon(icon);
     }
+
+
+
+
 
     public void setPiece(){
         setIcon(null);

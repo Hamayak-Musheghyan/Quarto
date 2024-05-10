@@ -17,8 +17,15 @@ public class HumanPlayer extends Player{
         super(name);
     }
 
-    public void selectFigure(int selectedFigure){
+    public void selectFigure(int selectedFigure) throws InvalidMoveException {
+
+        if(availableFigureIndexes.get(selectedFigure) == null){
+            throw new InvalidMoveException("Invalid Index for Figure");
+        }
         this.selectedFigure = selectedFigure;
+        //Player.availableFigureIndexes.remove(selectedFigure); // TODO:: check if works
+        availableFigureIndexes.set(selectedFigure, null);
+
     }
 
 

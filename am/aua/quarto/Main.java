@@ -11,6 +11,8 @@ public class Main {
             QuartoConsole game1 = new QuartoConsole();
             game1.play();
         }
+
+
         QuartoUI game = new QuartoUI();
     }
 }

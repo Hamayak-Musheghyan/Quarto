@@ -10,8 +10,8 @@ public class HeightAntiJoker extends SpecialFigure {
     }
 
     public String toString(){
-        return "" + color.toString().charAt(0) +
-                "-" +
+        return color.toString().charAt(0) +
+                "*" +
                 shape.toString().charAt(0) +
                 form.toString().charAt(0);
     }

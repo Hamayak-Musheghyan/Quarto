@@ -10,6 +10,7 @@ public class SuperJoker extends SpecialFigure {
     }
 
     public boolean isSameColor(Figure other){
+        System.out.println("Super Joker checker by ");
         return  true;
     }
     public boolean isSameHeight(Figure other){

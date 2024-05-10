@@ -28,8 +28,6 @@ public class MediumComputerPlayer extends ComputerPlayer{
                     } else {
                         copyGame = new Quarto(game);
                         current = null;
-                        if(i == 3 && j ==3 )
-                            System.out.println("I am here");
                     }
                 }
             }

@@ -4,6 +4,8 @@ import am.aua.quarto.core.cards.Card;
 import am.aua.quarto.core.figures.*;
 import am.aua.quarto.core.players.*;
 
+import java.util.ArrayList;
+
 public class Quarto implements Cloneable{
 
     // static variables
@@ -22,26 +24,25 @@ public class Quarto implements Cloneable{
 
 
     // the only constructor
-    public Quarto (String name, String input){
+    public Quarto (String name1, String name2, String input){
 
         // initialises instance variables to default values
         this.counter = 0;
         this.turn = false;
         this.board = new Puttable[BOARD_LENGTH][BOARD_HEIGHT];
-
         // sets players
         try {
-            this.p1 = new HumanPlayer(name);
-            if (input.equalsIgnoreCase("easy")) {
-                p2 = new EasyComputerPlayer();
-            } else if (input.equalsIgnoreCase("medium")) {
-                p2 = new MediumComputerPlayer();
-            }
-//            } else if (input.equalsIgnoreCase("hard")) {
-//                p2 = new HardComputerPlayer();
-//            }
-            else {
+            if(name2.equalsIgnoreCase("human")) {
+                this.p1 = new HumanPlayer(name1);
                 p2 = new HumanPlayer(input);
+            }
+            else if(name2.equalsIgnoreCase("computer")) {
+                this.p1 = new HumanPlayer(name1);
+                if (input.equalsIgnoreCase("easy")) {
+                    p2 = new EasyComputerPlayer();
+                } else if (input.equalsIgnoreCase("medium")) {
+                    p2 = new MediumComputerPlayer();
+                }
             }
         }
         catch (NullPointerException e){
@@ -63,7 +64,15 @@ public class Quarto implements Cloneable{
         }
 
     }
-
+    public Quarto (Quarto that){
+        this.counter = that.counter;
+        this.turn = that.turn;
+        this.board = that.getBoard();
+        this.p1 = that.p1;
+        this.p2 = that.p2;
+        this.figures = that.getFigures();
+        this.lastPosition = Position.generatePosition(that.lastPosition.getRow(), that.lastPosition.getColumn());
+    }
     public Puttable[][] getBoard(){
         Puttable[][] newBoard = new Puttable[BOARD_LENGTH][BOARD_HEIGHT];
         for (int i = 0; i < BOARD_LENGTH; i++) {
@@ -205,31 +214,6 @@ public class Quarto implements Cloneable{
         return null;
     }
 
-    public ActualFigure takeFigure(int index){
-        ActualFigure f = null;
-        if(figures[index] != null) {
-            f = this.figures[index].clone();
-        }
-        this.figures[index] = null;
-        return f;
-    }
-
-    public boolean performPut (Position p, Figure f){
-
-        if(this.getCardAt(p) != null){
-            this.getPlayer(getTurn()).setPoints(this.getCardAt(p).getPoint());
-        }
-
-        if(this.isEmpty(p) && f != null){
-            this.board[p.getRow()][p.getColumn()] = f;
-            lastPosition = p;
-            counter++;
-            turn = !turn;
-            return true;
-        }
-
-        return false;
-    }
 
     public void setBoard(Position p, Figure f){
         if(this.isEmpty(p)){
@@ -271,16 +255,6 @@ public class Quarto implements Cloneable{
             System.exit(0);
         }
         return clone;
-    }
-
-    public Quarto (Quarto that){
-        this.counter = that.counter;
-        this.turn = that.turn;
-        this.board = that.getBoard();
-        this.p1 = that.p1;
-        this.p2 = that.p2;
-        this.figures = that.getFigures();
-        this.lastPosition = Position.generatePosition(that.lastPosition.getRow(), that.lastPosition.getColumn());
     }
 
 }

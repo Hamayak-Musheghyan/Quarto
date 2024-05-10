@@ -19,6 +19,6 @@ public class SuperAntiJoker extends SpecialFigure {
     }
 
     public String toString(){
-        return "----";
+        return "****";
     }
 }

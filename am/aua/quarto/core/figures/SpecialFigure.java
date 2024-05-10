@@ -11,7 +11,7 @@ public abstract class SpecialFigure extends Figure{
             new ShapeJoker(randomColor(), randomHeight(), randomForm()),
             new FormJoker(randomColor(), randomHeight(), randomShape()),
             new ColorAntiJoker(randomHeight(), randomShape(), randomForm()),
-            new HeightAntiJoker(randomColor(), randomShape(), randomForm()), 
+            new HeightAntiJoker(randomColor(), randomShape(), randomForm()),
             new ShapeAntiJoker(randomColor(), randomHeight(), randomForm()),
             new FormAntiJoker(randomColor(), randomHeight(), randomShape()),
             new SuperAntiJoker()
@@ -31,6 +31,5 @@ public abstract class SpecialFigure extends Figure{
     private static Height randomHeight(){ return Figure.Height.values()[(int) (Math.random()*2)];}
     private static Shape randomShape(){ return Figure.Shape.values()[(int) (Math.random()*2)];}
     private static Form randomForm(){ return Figure.Form.values()[(int) (Math.random()*2)];}
-
 
 }
