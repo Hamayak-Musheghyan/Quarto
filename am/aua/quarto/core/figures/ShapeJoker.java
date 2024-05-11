@@ -15,6 +15,6 @@ public class ShapeJoker extends SpecialFigure{
     }
 
     public boolean isSameShape(Figure other){
-        return  false;
+        return  true;
     }
 }
