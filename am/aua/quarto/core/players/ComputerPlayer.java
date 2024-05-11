@@ -29,7 +29,6 @@ public abstract class  ComputerPlayer extends Player{
         do {
             index = random.nextInt(Player.availableFigureIndexes.size());
         } while (game.getFigures()[Player.availableFigureIndexes.get(index)] == null);
-        Player.availableFigureIndexes.set(index, null);
          Player.availableFigureIndexes.remove(index);
         ActualFigure selectedFigure = game.getFigures()[index];
         game.setFigureToNull(index);
