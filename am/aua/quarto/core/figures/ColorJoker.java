@@ -18,6 +18,8 @@ public class ColorJoker extends SpecialFigure{
     }
 
 
-
+public boolean isSameColor(Figure other){
+        return  true;
+    }
 
 }
