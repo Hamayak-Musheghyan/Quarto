@@ -14,5 +14,7 @@ public class ShapeJoker extends SpecialFigure{
                 "+" + form.toString().charAt(0);
     }
 
-
+    public boolean isSameShape(Figure other){
+        return  false;
+    }
 }
