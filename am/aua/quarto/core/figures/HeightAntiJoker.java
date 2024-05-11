@@ -15,5 +15,7 @@ public class HeightAntiJoker extends SpecialFigure {
                 shape.toString().charAt(0) +
                 form.toString().charAt(0);
     }
-
+    public boolean isSameHeight(Figure other){
+        return  false;
+    }
 }
