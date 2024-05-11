@@ -16,5 +16,7 @@ public class ColorAntiJoker extends SpecialFigure {
                 form.toString().charAt(0);
     }
 
-
+public boolean isSameColor(Figure other){
+        return  false;
+    }
 }
